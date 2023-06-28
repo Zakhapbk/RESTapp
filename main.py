@@ -31,7 +31,7 @@ cursor = con.cursor()
 #     rate = db.relationship('Rate', backref=db.backref('connects', lazy=True))
 #     car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
 #     car = db.relationship('Car', backref=db.backref('connects', lazy=True))
-result = 0
+
 @app.route('/', methods=['post', 'get'])
 def index():
     global result
@@ -39,12 +39,12 @@ def index():
     result = cursor.fetchall()
     return render_template('index.html', data=result)
 
-# @app.route('/', methods=['get'])
-# def index2():
-#     global result
-#     cursor.execute('SELECT firm."Firm name",rate.name, "Connect".price FROM "Connect"  join firm on (firm.id = "Connect".idfirm) join rate on (rate.id = "Connect".idrate) where idcar = 1')
-#     result = cursor.fetchall()
-#     return render_template('index.html', data=result)
+@app.route('/api/<int:n>', methods=['get'])
+def index2(n):
+
+    cursor.execute('SELECT firm."Firm name",rate.name, "Connect".price FROM "Connect"  join firm on (firm.id = "Connect".idfirm) join rate on (rate.id = "Connect".idrate) where idcar = {0}'.format(n))
+    result = cursor.fetchall()
+    return render_template('index.html', data=result)
 
 
 
